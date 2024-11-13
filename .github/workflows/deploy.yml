@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetch all branches and history
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -34,7 +36,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build # Directory to deploy (React builds to `build` by default)
-
-# Optional: if you deploy on Vercel/Netlify
-# - name: Deploy to Vercel
-#   run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+          publish_branch: gh-pages # Specify the branch for GitHub Pages
