@@ -1,0 +1,40 @@
+name: Deploy React App
+
+on:
+  push:
+    branches:
+      - main # Trigger deployment on pushes to the main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18" # Specify the version of Node.js you need
+
+      - name: Install Dependencies
+        run: |
+          npm install
+
+      - name: Build Project
+        env:
+          REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }} # Accessing GitHub secret
+        run: |
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build # Directory to deploy (React builds to `build` by default)
+
+# Optional: if you deploy on Vercel/Netlify
+# - name: Deploy to Vercel
+#   run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
