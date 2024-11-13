@@ -32,8 +32,9 @@ jobs:
 
       - name: Verify Git Status
         run: |
-          git status
+          git remote -v
           git branch -a
+          git status
 
       - name: Deploy to GitHub Pages
         if: success()
